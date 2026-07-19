@@ -1,0 +1,14 @@
+model_name: Alibaba-NLP/gte-modernbert-base
+train_queries: data/processed/embed/train/queries.jsonl
+train_corpus: data/processed/embed/train/corpus.jsonl
+train_qrels: data/processed/embed/train/qrels.tsv
+sequence_length: 512
+batch_size: 16
+learning_rate: 2.0e-5
+loss: CachedMultipleNegativesRankingLoss
+normalize_embeddings: true
+similarity: dot_product
+sampling:
+  negatives: in_batch
+output_directory: artifacts/checkpoints/embed/gte-modernbert-base
+random_seed: 42

@@ -1,0 +1,1 @@
+"""Legal retrieval embedding capability."""
