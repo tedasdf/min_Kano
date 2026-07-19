@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "timestamp_utc": "2026-07-19T10:06:45.133167+00:00",
+  "model": "bm25",
+  "split": "data\\processed\\embed\\test",
+  "queries": 211,
+  "passages": 211,
+  "positive_pairs": 211,
+  "metrics": {
+    "ndcg_at_10": 0.88765065,
+    "recall_at_1": 0.81516588,
+    "recall_at_5": 0.93364929,
+    "recall_at_10": 0.96682464,
+    "mrr": 0.86387923
+  },
+  "efficiency": {
+    "setup_seconds": 0.109377,
+    "evaluation_seconds": 1.467102,
+    "mean_query_latency_ms": 6.95309,
+    "representation_dimension": null,
+    "python_peak_memory_mb": 3.42
+  },
+  "parameters": {
+    "k1": 1.5,
+    "b": 0.75
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Windows-11-10.0.26200-SP0"
+  }
+}

@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: mini-kanon3
+Version: 0.1.0
+Summary: Multi-capability legal language-model engineering project
+Requires-Python: >=3.11
+Requires-Dist: PyYAML>=6.0
+Provides-Extra: data
+Requires-Dist: datasets>=3.0; extra == "data"
+Provides-Extra: test
+Requires-Dist: pytest>=8.0; extra == "test"
+Provides-Extra: eval
+Requires-Dist: sentence-transformers>=3.4; extra == "eval"
+Requires-Dist: torch>=2.4; extra == "eval"
+Requires-Dist: numpy>=1.26; extra == "eval"

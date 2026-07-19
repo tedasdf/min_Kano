@@ -1,0 +1,12 @@
+PyYAML>=6.0
+
+[data]
+datasets>=3.0
+
+[eval]
+sentence-transformers>=3.4
+torch>=2.4
+numpy>=1.26
+
+[test]
+pytest>=8.0

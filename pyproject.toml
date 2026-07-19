@@ -12,6 +12,7 @@ dependencies = ["PyYAML>=6.0"]
 [project.optional-dependencies]
 data = ["datasets>=3.0"]
 test = ["pytest>=8.0"]
+eval = ["sentence-transformers>=3.4", "torch>=2.4", "numpy>=1.26"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
