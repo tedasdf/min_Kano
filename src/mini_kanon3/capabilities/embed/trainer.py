@@ -67,6 +67,9 @@ class EmbedTrainer:
                                 collate_fn=model.smart_batching_collate, drop_last=False)
             losses_this_epoch = []
             for features, labels in loader:
+                features = [util.batch_to_device(feature, model.device) for feature in features]
+                if labels is not None and hasattr(labels, "to"):
+                    labels = labels.to(model.device)
                 optimizer.zero_grad(set_to_none=True)
                 with torch.autocast(device_type="cuda", dtype=torch.float16, enabled=use_amp):
                     loss = loss_model(features, labels)
