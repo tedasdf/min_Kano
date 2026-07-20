@@ -32,6 +32,7 @@ class EmbedTrainer:
         except ImportError as exc:
             raise RuntimeError("Install the project training dependencies with: pip install -e '.[train]'") from exc
 
+        self._validate_data_paths()
         self._seed_everything(torch, np)
         device = self._resolve_device(torch)
         model = SentenceTransformer(self.config["model_name"], device=device, trust_remote_code=True)
@@ -126,6 +127,18 @@ class EmbedTrainer:
         if not path.exists():
             raise FileNotFoundError(f"Configured path does not exist: {path}")
         return path
+
+    def _validate_data_paths(self):
+        required = (
+            "train_queries", "train_corpus", "train_qrels",
+            "validation_queries", "validation_corpus", "validation_qrels",
+            "test_queries", "test_corpus", "test_qrels",
+        )
+        missing_keys = [key for key in required if key not in self.config]
+        if missing_keys:
+            raise ValueError(f"Training config is missing dataset paths: {', '.join(missing_keys)}")
+        for key in required:
+            self._path(key)
 
     def _write_report(self, history, device, elapsed, complete):
         report = {"schema_version": 1, "run": "embed_v1", "complete": complete,
