@@ -3,12 +3,25 @@ train_queries: data/processed/embed/train/queries.jsonl
 train_corpus: data/processed/embed/train/corpus.jsonl
 train_qrels: data/processed/embed/train/qrels.tsv
 sequence_length: 512
-batch_size: 16
+batch_size: 32
+mini_batch_size: 8
 learning_rate: 2.0e-5
 loss: CachedMultipleNegativesRankingLoss
+loss_scale: 20.0
 normalize_embeddings: true
 similarity: dot_product
+epochs: 3
+warmup_ratio: 0.1
+weight_decay: 0.01
+max_grad_norm: 1.0
+mixed_precision: true
+device: auto
+num_workers: 0
+checkpoint_every_epochs: 1
+validation_batch_size: 32
 sampling:
   negatives: in_batch
+  no_duplicates_per_batch: true
 output_directory: artifacts/checkpoints/embed/gte-modernbert-base
+report_path: reports/experiments/embed/embed_v1.json
 random_seed: 42
