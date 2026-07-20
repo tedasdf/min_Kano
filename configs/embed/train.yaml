@@ -14,7 +14,9 @@ epochs: 3
 warmup_ratio: 0.1
 weight_decay: 0.01
 max_grad_norm: 1.0
-mixed_precision: true
+# CachedMultipleNegativesRankingLoss uses backward hooks/GradCache. Keep its
+# cached representations and gradients in one dtype for this baseline.
+mixed_precision: false
 device: auto
 num_workers: 0
 checkpoint_every_epochs: 1

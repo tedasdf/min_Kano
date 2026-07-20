@@ -51,8 +51,11 @@ class EmbedTrainer:
             model=model, mini_batch_size=int(self.config["mini_batch_size"]),
             similarity_fct=util.dot_score, scale=float(self.config["loss_scale"])
         )
-        use_amp = bool(self.config.get("mixed_precision", True)) and device.startswith("cuda")
-        scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
+        if self.config.get("mixed_precision", False):
+            raise ValueError(
+                "Embed v1 uses CachedMultipleNegativesRankingLoss and requires "
+                "mixed_precision: false to keep GradCache representations and gradients in one dtype"
+            )
         history, started = [], time.perf_counter()
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -71,13 +74,10 @@ class EmbedTrainer:
                 if labels is not None and hasattr(labels, "to"):
                     labels = labels.to(model.device)
                 optimizer.zero_grad(set_to_none=True)
-                with torch.autocast(device_type="cuda", dtype=torch.float16, enabled=use_amp):
-                    loss = loss_model(features, labels)
-                scaler.scale(loss).backward()
-                scaler.unscale_(optimizer)
+                loss = loss_model(features, labels)
+                loss.backward()
                 torch.nn.utils.clip_grad_norm_(model.parameters(), float(self.config["max_grad_norm"]))
-                scaler.step(optimizer)
-                scaler.update()
+                optimizer.step()
                 scheduler.step()
                 losses_this_epoch.append(float(loss.detach().cpu()))
 
