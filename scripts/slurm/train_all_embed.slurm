@@ -17,15 +17,9 @@ CONDA_ENV="${CONDA_ENV:-minKvenv}"
 
 cd "$PROJECT_DIR"
 
-if command -v conda >/dev/null 2>&1; then
-  source "$(conda info --base)/etc/profile.d/conda.sh"
-  conda activate "$CONDA_ENV"
-elif [[ -f ".venv-eval/bin/activate" ]]; then
-  source ".venv-eval/bin/activate"
-else
-  echo "No Conda command or .venv-eval environment was found" >&2
-  exit 1
-fi
+
+module load miniforge
+mamda activate "$CONDA_ENV"
 
 export PYTHONPATH="$PROJECT_DIR/src${PYTHONPATH:+:$PYTHONPATH}"
 export HF_HOME="${HF_HOME:-${SCRATCH:-$PROJECT_DIR/.cache}/huggingface}"
