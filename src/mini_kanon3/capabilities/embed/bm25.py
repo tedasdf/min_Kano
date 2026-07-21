@@ -26,6 +26,9 @@ class BM25:
                     for term, frequency in document_frequency.items()}
 
     def rank(self, query: str, limit: int | None = None) -> list[str]:
+        return [passage_id for passage_id, _ in self.rank_with_scores(query, limit)]
+
+    def rank_with_scores(self, query: str, limit: int | None = None) -> list[tuple[str, float]]:
         query_terms = tokenize(query)
         scores = []
         for passage_id, frequencies, length in zip(self.ids, self.term_frequencies, self.lengths):
@@ -38,4 +41,4 @@ class BM25:
                 score += self.idf.get(term, 0.0) * frequency * (self.k1 + 1) / denominator
             scores.append((score, passage_id))
         scores.sort(key=lambda value: (-value[0], value[1]))
-        return [passage_id for _, passage_id in scores[:limit]]
+        return [(passage_id, score) for score, passage_id in scores[:limit]]

@@ -1,6 +1,6 @@
 import unittest
 
-from mini_kanon3.capabilities.embed.dataset import arrange_no_duplicate_batches, sample_one_positive_per_query
+from mini_kanon3.capabilities.embed.dataset import make_no_duplicate_batches, sample_one_positive_per_query
 
 
 class PositiveSamplingTest(unittest.TestCase):
@@ -19,9 +19,8 @@ class PositiveSamplingTest(unittest.TestCase):
         corpus = {"p1": "shared", "p2": "other"}
         positives = {"q1": ["p1"], "q2": ["p1"], "q3": ["p2"]}
         pairs = sample_one_positive_per_query(queries, corpus, positives, 42, 0)
-        arranged = arrange_no_duplicate_batches(pairs, 2)
-        for index in range(0, len(arranged), 2):
-            batch = arranged[index:index + 2]
+        batches = make_no_duplicate_batches(pairs, 2)
+        for batch in batches:
             self.assertEqual(len({pair.passage for pair in batch}), len(batch))
 
 

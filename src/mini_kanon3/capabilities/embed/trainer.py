@@ -10,9 +10,10 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .dataset import arrange_no_duplicate_batches, load_positive_groups, sample_one_positive_per_query
+from .dataset import attach_mined_negatives, load_positive_groups, make_no_duplicate_batches, sample_one_positive_per_query
 from .io import load_retrieval_split
 from .metrics import evaluate_rankings
+from mini_kanon3.tracking import WandbTrainingCallback
 
 
 class EmbedTrainer:
@@ -27,7 +28,6 @@ class EmbedTrainer:
             import numpy as np
             import torch
             from sentence_transformers import InputExample, SentenceTransformer, losses, models, util
-            from torch.utils.data import DataLoader
             from transformers import get_linear_schedule_with_warmup
         except ImportError as exc:
             raise RuntimeError("Install the project training dependencies with: pip install -e '.[train]'") from exc
@@ -42,7 +42,15 @@ class EmbedTrainer:
         queries, corpus, positives = load_positive_groups(self._path("train_queries").parent)
         epochs = int(self.config["epochs"])
         batch_size = int(self.config["batch_size"])
-        steps_per_epoch = math.ceil(len(queries) / batch_size)
+        preview_pairs = sample_one_positive_per_query(queries, corpus, positives, self.seed, 0)
+        if self.config.get("hard_negatives_path"):
+            preview_pairs = attach_mined_negatives(
+                preview_pairs, corpus, positives, self._path("hard_negatives_path"),
+                int(self.config["hard_negatives_per_query"]),
+            )
+        steps_per_epoch = (len(make_no_duplicate_batches(preview_pairs, batch_size))
+                           if self.config.get("sampling", {}).get("no_duplicates_per_batch", True)
+                           else math.ceil(len(preview_pairs) / batch_size))
         total_steps = steps_per_epoch * epochs
         warmup_steps = round(total_steps * float(self.config["warmup_ratio"]))
         optimizer = torch.optim.AdamW(model.parameters(), lr=float(self.config["learning_rate"]),
@@ -58,19 +66,28 @@ class EmbedTrainer:
                 "mixed_precision: false to keep GradCache representations and gradients in one dtype"
             )
         history, started = [], time.perf_counter()
+        tracker = WandbTrainingCallback(self.config.get("tracking", {}), self.config)
+        global_step = 0
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         for epoch in range(epochs):
             model.train()
             pairs = sample_one_positive_per_query(queries, corpus, positives, self.seed, epoch)
+            if self.config.get("hard_negatives_path"):
+                pairs = attach_mined_negatives(
+                    pairs, corpus, positives, self._path("hard_negatives_path"),
+                    int(self.config["hard_negatives_per_query"]),
+                )
             if self.config.get("sampling", {}).get("no_duplicates_per_batch", True):
-                pairs = arrange_no_duplicate_batches(pairs, batch_size)
-            examples = [InputExample(texts=[pair.query, pair.passage]) for pair in pairs]
-            loader = DataLoader(examples, batch_size=batch_size, shuffle=False,
-                                num_workers=int(self.config.get("num_workers", 0)),
-                                collate_fn=model.smart_batching_collate, drop_last=False)
+                pair_batches = make_no_duplicate_batches(pairs, batch_size)
+            else:
+                pair_batches = [pairs[index:index + batch_size]
+                                for index in range(0, len(pairs), batch_size)]
             losses_this_epoch = []
-            for features, labels in loader:
+            for batch_index, pair_batch in enumerate(pair_batches, 1):
+                examples = [InputExample(texts=[pair.query, pair.passage, *pair.negative_passages])
+                            for pair in pair_batch]
+                features, labels = model.smart_batching_collate(examples)
                 features = [util.batch_to_device(feature, model.device) for feature in features]
                 if labels is not None and hasattr(labels, "to"):
                     labels = labels.to(model.device)
@@ -80,7 +97,11 @@ class EmbedTrainer:
                 torch.nn.utils.clip_grad_norm_(model.parameters(), float(self.config["max_grad_norm"]))
                 optimizer.step()
                 scheduler.step()
-                losses_this_epoch.append(float(loss.detach().cpu()))
+                loss_value = float(loss.detach().cpu())
+                losses_this_epoch.append(loss_value)
+                global_step += 1
+                tracker.log_train_step(global_step, epoch + 1, batch_index, loss_value,
+                                       optimizer.param_groups[0]["lr"], torch)
 
             validation = self._evaluate(model, Path(self.config["validation_queries"]).parent,
                                         int(self.config["validation_batch_size"]))
@@ -88,12 +109,16 @@ class EmbedTrainer:
                             "mean_training_loss": sum(losses_this_epoch) / len(losses_this_epoch),
                             "validation": validation}
             history.append(epoch_record)
+            tracker.log_validation(global_step, epoch + 1, validation,
+                                   epoch_record["mean_training_loss"])
             if (epoch + 1) % int(self.config["checkpoint_every_epochs"]) == 0:
                 model.save_pretrained(str(self.output_dir / f"checkpoint-epoch-{epoch + 1}"))
             self._write_report(history, device, time.perf_counter() - started, complete=False)
 
         model.save_pretrained(str(self.output_dir / "final"))
-        return self._write_report(history, device, time.perf_counter() - started, complete=True)
+        report = self._write_report(history, device, time.perf_counter() - started, complete=True)
+        tracker.finish()
+        return report
 
     def _evaluate(self, model, split_dir: Path, batch_size: int):
         import numpy as np
@@ -129,11 +154,13 @@ class EmbedTrainer:
         return path
 
     def _validate_data_paths(self):
-        required = (
+        required = [
             "train_queries", "train_corpus", "train_qrels",
             "validation_queries", "validation_corpus", "validation_qrels",
             "test_queries", "test_corpus", "test_qrels",
-        )
+        ]
+        if self.config.get("hard_negatives_path"):
+            required.append("hard_negatives_path")
         missing_keys = [key for key in required if key not in self.config]
         if missing_keys:
             raise ValueError(f"Training config is missing dataset paths: {', '.join(missing_keys)}")
@@ -141,10 +168,11 @@ class EmbedTrainer:
             self._path(key)
 
     def _write_report(self, history, device, elapsed, complete):
-        report = {"schema_version": 1, "run": "embed_v1", "complete": complete,
+        report = {"schema_version": 1, "run": self.config.get("run_name", "embed_v1"), "complete": complete,
                   "timestamp_utc": datetime.now(timezone.utc).isoformat(),
                   "model": self.config["model_name"], "device": device,
-                  "training_supervision": "positive pairs + cached in-batch negatives",
+                  "training_supervision": self.config.get(
+                      "training_supervision", "positive pairs + cached in-batch negatives"),
                   "config": self.config, "history": history,
                   "elapsed_seconds": round(elapsed, 3)}
         self.report_path.parent.mkdir(parents=True, exist_ok=True)

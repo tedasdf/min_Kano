@@ -158,10 +158,17 @@ def prepare(input_path, output, seed, ratios, limits):
 
     interim = output / "interim" / "embed"
     processed = output / "processed" / "embed"
-    if interim.exists():
-        shutil.rmtree(interim)
-    if processed.exists():
-        shutil.rmtree(processed)
+    # Remove generated outputs individually so committed README/metadata files
+    # inside the stage directories survive regeneration.
+    for generated in (interim / "positive_only", interim / "audit"):
+        if generated.exists():
+            shutil.rmtree(generated)
+    for generated in (processed / "train", processed / "validation", processed / "test"):
+        if generated.exists():
+            shutil.rmtree(generated)
+    report_path = processed / "dataset_report.json"
+    if report_path.exists():
+        report_path.unlink()
     write_objects(interim / "positive_only", list(queries.values()), list(corpus.values()), qrels)
 
     # A query spanning documents is assigned to every applicable split, with only in-split positives.
@@ -227,7 +234,7 @@ def prepare(input_path, output, seed, ratios, limits):
         "invalid_json_details": invalid_json,
     }
     processed.mkdir(parents=True, exist_ok=True)
-    (processed / "dataset_report.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return report
 
 
