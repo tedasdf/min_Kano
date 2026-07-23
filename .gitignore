@@ -13,6 +13,8 @@ data/processed/**/*
 !data/raw/**/*.sha256
 !data/raw/**/metadata.json
 !data/raw/**/LICENCE.md
+!data/**/*.py
+!data/**/*.md
 
 # External benchmark caches and generated model artifacts.
 external/mleb/**/*

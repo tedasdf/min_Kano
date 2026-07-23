@@ -120,8 +120,17 @@ class DistillationTrainer:
                 torch.nn.utils.clip_grad_norm_(model.parameters(), float(self.config["max_grad_norm"]))
                 optimizer.step(); scheduler.step(); loss_value = float(loss.detach().cpu())
                 epoch_losses.append(loss_value); global_step += 1
+                learning_rate = optimizer.param_groups[0]["lr"]
+                print(
+                    f"[train] run={self.config.get('run_name', 'embed_v4')} "
+                    f"epoch={epoch + 1}/{epochs} "
+                    f"batch={batch_index}/{len(loader)} "
+                    f"step={global_step} loss={loss_value:.6f} "
+                    f"lr={learning_rate:.8g}",
+                    flush=True,
+                )
                 tracker.log_train_step(global_step, epoch + 1, batch_index, loss_value,
-                                       optimizer.param_groups[0]["lr"], torch)
+                                       learning_rate, torch)
             validation = _evaluate_model(model, Path(self.config["validation_queries"]).parent,
                                          int(self.config["validation_batch_size"]))
             history.append({"epoch": epoch + 1, "mean_training_loss": sum(epoch_losses) / len(epoch_losses),

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "timestamp_utc": "2026-07-19T10:06:45.133167+00:00",
+  "timestamp_utc": "2026-07-23T07:19:02.530936+00:00",
   "model": "bm25",
   "split": "data\\processed\\embed\\test",
   "queries": 211,
@@ -14,9 +14,9 @@
     "mrr": 0.86387923
   },
   "efficiency": {
-    "setup_seconds": 0.109377,
-    "evaluation_seconds": 1.467102,
-    "mean_query_latency_ms": 6.95309,
+    "setup_seconds": 0.103442,
+    "evaluation_seconds": 1.633526,
+    "mean_query_latency_ms": 7.741829,
     "representation_dimension": null,
     "python_peak_memory_mb": 3.42
   },

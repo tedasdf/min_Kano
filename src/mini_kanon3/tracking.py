@@ -30,12 +30,33 @@ class WandbTrainingCallback:
             resume=tracking.get("resume", "allow"),
             id=tracking.get("run_id") or None,
         )
+        # Use an explicit training axis without reusing W&B's internal step.
+        # Validation is emitted after the final batch of an epoch and therefore
+        # legitimately shares its trainer/global_step with that batch.
+        wandb.define_metric("trainer/global_step")
+        wandb.define_metric(
+            "train/*",
+            step_metric="trainer/global_step",
+        )
+        wandb.define_metric(
+            "validation/*",
+            step_metric="trainer/global_step",
+        )
+        wandb.define_metric(
+            "epoch/*",
+            step_metric="trainer/global_step",
+        )
+        wandb.define_metric(
+            "system/*",
+            step_metric="trainer/global_step",
+        )
 
     def log_train_step(self, step: int, epoch: int, batch: int, loss: float, learning_rate: float,
                        torch_module=None):
         if not self.run:
             return
-        metrics = {"train/loss": loss, "train/learning_rate": learning_rate,
+        metrics = {"trainer/global_step": step,
+                   "train/loss": loss, "train/learning_rate": learning_rate,
                    "train/epoch": epoch, "train/batch": batch}
         if torch_module is not None and torch_module.cuda.is_available():
             metrics.update({
@@ -43,14 +64,17 @@ class WandbTrainingCallback:
                 "system/gpu_memory_reserved_mb": torch_module.cuda.memory_reserved() / 1024**2,
                 "system/gpu_peak_memory_mb": torch_module.cuda.max_memory_allocated() / 1024**2,
             })
-        self.wandb.log(metrics, step=step)
+        self.wandb.log(metrics)
 
     def log_validation(self, step: int, epoch: int, metrics: dict, mean_loss: float):
         if not self.run:
             return
-        payload = {f"validation/{name}": value for name, value in metrics.items()}
+        payload = {"trainer/global_step": step}
+        payload.update(
+            {f"validation/{name}": value for name, value in metrics.items()}
+        )
         payload.update({"epoch/mean_training_loss": mean_loss, "epoch/index": epoch})
-        self.wandb.log(payload, step=step)
+        self.wandb.log(payload)
         for name, value in metrics.items():
             summary_name = f"best_validation/{name}"
             previous = self.run.summary.get(summary_name)

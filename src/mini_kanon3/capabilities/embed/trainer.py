@@ -100,8 +100,17 @@ class EmbedTrainer:
                 loss_value = float(loss.detach().cpu())
                 losses_this_epoch.append(loss_value)
                 global_step += 1
+                learning_rate = optimizer.param_groups[0]["lr"]
+                print(
+                    f"[train] run={self.config.get('run_name', 'embed')} "
+                    f"epoch={epoch + 1}/{epochs} "
+                    f"batch={batch_index}/{len(pair_batches)} "
+                    f"step={global_step} loss={loss_value:.6f} "
+                    f"lr={learning_rate:.8g}",
+                    flush=True,
+                )
                 tracker.log_train_step(global_step, epoch + 1, batch_index, loss_value,
-                                       optimizer.param_groups[0]["lr"], torch)
+                                       learning_rate, torch)
 
             validation = self._evaluate(model, Path(self.config["validation_queries"]).parent,
                                         int(self.config["validation_batch_size"]))

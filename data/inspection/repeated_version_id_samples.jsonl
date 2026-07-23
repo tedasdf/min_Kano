@@ -1,0 +1,230 @@
+// nsw_caselaw:599f6857e4b058596cba9963: 2 rows at indices [110, 1052]
+{
+    "row_index": 110, 
+    "version_id": "nsw_caselaw:599f6857e4b058596cba9963", 
+    "citation": "Law Society of New South Wales v McCartney [2017] NSWCATOD 130", 
+    "source_type": "decision", 
+    "jurisdiction": "new_south_wales", 
+    "url": "https://www.caselaw.nsw.gov.au/decision/599f6857e4b058596cba9963", 
+    "question": """
+        What are some examples of conduct that could be considered unsatisfactory professional conduct or professional misconduct for an Australian legal practitioner according to the decision in Law Society of New South Wales v McCartney [2017] NSWCATOD 130?""", 
+    "answer": """
+        In the decision of Law Society of New South Wales v McCartney [2017] NSWCATOD 130, it was outlined that the following conduct could be considered unsatisfactory professional conduct or professional misconduct for an Australian legal practitioner: contravention of the Act, regulations or legal profession rules, charging excessive legal costs in connection with the practice of law, conviction for a serious offence, a tax offence, or an offence involving dishonesty, becoming an insolvent under administration, becoming disqualified from managing or being involved in the management of any corporation under the Corporations Act 2001 of the Commonwealth, and failure to comply with the requirements of a notice under the Act or the regulations.
+    """, 
+    "passage": """ 
+        (b) conduct of an Australian legal practitioner whether occurring in connection with the practice of law or occurring otherwise than in connection with the practice of law that would, if established, justify a finding that the practitioner is not a fit and proper person to engage in legal practice. (2) For finding that an Australian legal practitioner is not a fit and proper person to engage in legal practice as mentioned in subsection (1), regard may be had to the matters that would be considered under section 25 or 42 if the practitioner were an applicant for admission to the legal profession under this Act or for the grant or renewal of a local practising certificate and any other relevant matters. 498 Conduct capable of being unsatisfactory professional conduct or professional misconduct (1) Without limiting section 496 or 497, the following conduct is capable of being unsatisfactory professional conduct or professional misconduct: (a) conduct consisting of a contravention of this Act, the regulations or the legal profession rules, (b) charging of excessive legal costs in connection with the practice of law, (c) conduct in respect of which there is a conviction for: (i) a serious offence, or (ii) a tax offence, or (iii) an offence involving dishonesty, (d) conduct of an Australian legal practitioner as or in becoming an insolvent under administration, (e) conduct of an Australian legal practitioner in becoming disqualified from managing or being involved in the management of any corporation under the Corporations Act 2001 of the Commonwealth, (f) conduct consisting of a failure to comply with the requirements of a notice under this Act or the regulations (other than an information notice),
+    """
+}
+{
+    "row_index": 1052, 
+    "version_id": "nsw_caselaw:599f6857e4b058596cba9963", 
+    "citation": "Law Society of New South Wales v McCartney [2017] NSWCATOD 130", 
+    "source_type": "decision", 
+    "jurisdiction": "new_south_wales", 
+    "url": "https://www.caselaw.nsw.gov.au/decision/599f6857e4b058596cba9963", 
+    "question": """
+        What was the Tribunal's decision regarding the respondent's conduct in the case of Law Society of New South Wales v McCartney [2017] NSWCATOD 130?
+    """, 
+    "answer": """
+    In the case of Law Society of New South Wales v McCartney [2017] NSWCATOD 130, the Tribunal decided that the respondent's conduct did not constitute professional misconduct under s 497. The Tribunal found the respondent's conduct to be incredibly sloppy and falling short of the standard of competence and diligence expected of a reasonably competent Australian legal practitioner, but it did not constitute professional misconduct. The Tribunal also did not accept the contention that the respondent's conduct constituted professional misconduct in the Allinson sense. However, the Tribunal agreed with the applicant's contentions that the respondent should be reprimanded and that a fine should be imposed.", 
+    "passage": "32. The applicant did not rely on the alternative limb of s 497, namely that the conduct constituted a “substantial” failure to reach or maintain a reasonable standard of competence and diligence. On the basis of what was said in the Xu case, we are of the view that the respondent’s conduct did not constitute professional misconduct under s 497. The respondent’s conduct was, like Mr Xu, incredibly sloppy and fell well short of the standard of competence and diligence that a member of the public is entitled to expect of a reasonably competent Australian legal practitioner, but it did not, in our view, constitute professional misconduct. 33. In addition, we do not accept the applicant’s contention that the respondent’s conduct constituted professional misconduct in the Allinson sense. The respondent does not deserve to be described as disgraceful or dishonourable. 34. Section 562 of the LP Act provides that if after it has completed a hearing in relation to a complaint against an Australian legal practitioner, the Tribunal is satisfied that the practitioner has engaged in unsatisfactory professional conduct or professional misconduct, the Tribunal may make such orders as it thinks fit, including one or more of the orders specified in s 562. Those orders include an order reprimanding the practitioner as well as an order imposing a fine. We agree with the applicant’s contentions that the respondent should be reprimanded and that a fine should be imposed. We note that s 562(8) provides that if the Tribunal makes an order reprimanding the practitioner, the Tribunal is to publish the order and a statement of its reasons for making the order."
+}
+
+
+// Different question
+// +
+// Different non-overlapping passage
+// +
+// Same document
+// for an unseen document benchmark both rows must be assinged together 
+
+
+// nsw_caselaw:549f7a493004262463a9533b: 2 rows at indices [358, 1578]
+{
+    "row_index": 358, 
+    "version_id": "nsw_caselaw:549f7a493004262463a9533b", 
+    "citation": "Perfection Dairies Pty Ltd v Finn [2006] NSWIRComm 137", 
+    "source_type": "decision", 
+    "jurisdiction": "new_south_wales", 
+    "url": "https://www.caselaw.nsw.gov.au/decision/549f7a493004262463a9533b", 
+    "question": """
+        In the case of Perfection Dairies Pty Ltd v Finn [2006] NSWIRComm 137, who did the counsel for the appellant argue had the standing to commence the proceedings?
+    """, 
+    "answer": """
+        In the case of Perfection Dairies Pty Ltd v Finn [2006] NSWIRComm 137, Mr P Coleman, counsel for the appellant, argued that the only person with standing to commence the proceedings was the respondent's trustee in bankruptcy.
+    """, 
+    "passage": """
+        7 The primary questions raised by the appeal are: (a) Was the termination of employment harsh, unreasonable or unjust? (b) If so, is reinstatement, together with the associated orders, appropriate and practicable relief. (c) Did the respondent, as an undischarged bankrupt, have standing to make and pursue the application. 8 We turn to consider first whether the respondent, as an undischarged bankrupt, had standing to bring an application pursuant to s 84 of the Industrial Relations Act 1996. It was common ground that the respondent was an undischarged bankrupt at the time he made his s 84 application. This was a matter that did not come to the attention of the appellant until after it had filed its notice of appeal and thus led to the need for the amendment granted. 9 Mr P Coleman, counsel for the appellant, submitted that the only person with standing to commence the proceedings was the respondent's trustee in bankruptcy. 10 The issue in these proceedings which arises from the respondent's bankruptcy is essentially whether his right to commence proceedings under s 84 of the Industrial Relations Act after his dismissal by the appellant was \"after-acquired property\" in terms of s 58 of the Bankruptcy Act 1966 (Cth) and thus divisible among his creditors in terms of s 116 of that statute. 
+        """
+}
+{
+    "row_index": 1578, 
+    "version_id": "nsw_caselaw:549f7a493004262463a9533b", 
+    "citation": "Perfection Dairies Pty Ltd v Finn [2006] NSWIRComm 137", 
+    "source_type": "decision", 
+    "jurisdiction": "new_south_wales", 
+    "url": "https://www.caselaw.nsw.gov.au/decision/549f7a493004262463a9533b", 
+    "question": """
+        In the case of Perfection Dairies Pty Ltd v Finn [2006] NSWIRComm 137, what were the grounds of appeal by the appellant?
+    """, 
+    "answer": """
+        In the case of Perfection Dairies Pty Ltd v Finn [2006] NSWIRComm 137, the appellant's grounds of appeal were as follows: The Commissioner erred in relation to the following findings, conclusions and determinations: (a) That the introduction of a policy banning cigarettes from the workplace was an \"over-­reaction\". (b) The introduction of a no smoking policy was established without a consultative process. (c) The appellant's policy was \"unreasonable\", introduced by \"decree\" and \"without proper consultation\".
+    """, 
+    "passage": """
+        (d) Then, that the decision to dismiss was made before giving the respondent the opportunity to be heard (para 27). (e) The Commissioner found the dismissal to be harsh unreasonable and unjust (para 30). (f) Rejected the submission that reinstatement was impracticable (para 31) and, (g) Ordered reinstatement with full back pay. 68 The appellant's grounds of appeal were as follows: The Policy The Commissioner erred in relation to the following findings, conclusions and determinations: (a) That the introduction of a policy banning cigarettes from the workplace was an \"over-­reaction\". (b) The introduction of a no smoking policy was established without a consultative process. (c) The appellant's policy was \"unreasonable\", introduced by \"decree\" and \"without proper consultation\". 
+    """
+}
+// Different question
+// +
+// Different non-overlapping passage
+// +
+// Same document
+
+
+
+// # federal_court_of_australia:fca/single/1997/1997fca0669: 2 rows at indices [287, 502]
+{  
+    "row_index": 287, 
+    "version_id": "federal_court_of_australia:fca/single/1997/1997fca0669", 
+    "citation": "Sutcliffe, Timothy Warren v General Motors-Holden's Automotive Ltd [1997] FCA 669", 
+    "source_type": "decision", 
+    "jurisdiction": "commonwealth", 
+    "url": "https://www.judgments.fedcourt.gov.au/judgments/Judgments/fca/single/1997/1997fca0669", 
+    "question": """
+        In the case of Sutcliffe, Timothy Warren v General Motors-Holden's Automotive Ltd [1997] FCA 669, what was the court's decision regarding the employer's request for a stay of the Judicial Registrar’s order for the employee’s reinstatement?", "answer": "In the case of Sutcliffe, Timothy Warren v General Motors-Holden's Automotive Ltd [1997] FCA 669, the court decided not to stay the Judicial Registrar’s order for the employee’s reinstatement. The court found it unconvincing for the employer to allege that a conviction in the Magistrates Court would be inconsistent with the continuation of the employment relationship in the absence of such a conviction and before the trial of the relevant complaints. The court was not satisfied that the employer had demonstrated a reason or an appropriate case to warrant the exercise of the Court’s discretion in its favour to grant a stay.
+    """, 
+    "passage": """
+        I am of the view that I should not stay the Judicial Registrar’s order for the employee’s reinstatement. It is entirely unconvincing for the employer to allege that a conviction in the Magistrates Court would be inconsistent with the continuation of the employment relationship in the absence of such a conviction and before the trial of the relevant complaints. Equally, the lack of a conviction is consistent with the continuation of an on-going employment relationship. It is uncertain as to when the trial of the criminal proceedings will occur. Conversely this Court is able to offer an early trial date of the review to the parties in a time frame in which I am informed by counsel that the parties are confident that the matter can be concluded. Consequently, I am not satisfied that the employer has demonstrated a reason or an appropriate case to warrant the exercise of the Court’s discretion in its favour to grant a stay. See generally Norman v Besser Industries (NT) Pty Ltd, IRCA, Full Court, 1 August 1996, unreported and the principles referred to therein. The orders of the Court are as follows: 1. The orders of the Judicial Registrar regarding remuneration lost and continuity of the employee’s employment are stayed pending the hearing and determination of the review. 2. The employer’s notice of motion of 23 July 1997 is otherwise dismissed. 3. The review shall be conducted on the transcript of the evidence and exhibits before the Judicial Registrar with a right in the parties to submit additional affidavit evidence in chief. 4. On or before 15 August 1997 the employer shall file and serve any affidavit, constituting the further evidence in chief of any witness on which it intends to rely at the trial additional to the evidence given before the Judicial Registrar.
+    """
+}
+{
+    "row_index": 502, 
+    "version_id": "federal_court_of_australia:fca/single/1997/1997fca0669", 
+    "citation": "Sutcliffe, Timothy Warren v General Motors-Holden's Automotive Ltd [1997] FCA 669", 
+    "source_type": "decision", 
+    "jurisdiction": "commonwealth", 
+    "url": "https://www.judgments.fedcourt.gov.au/judgments/Judgments/fca/single/1997/1997fca0669", 
+    "question": """
+        What were the orders given by the court in the case of Sutcliffe, Timothy Warren v General Motors-Holden's Automotive Ltd [1997] FCA 669 regarding the submission of additional evidence and the scheduling of the trial?", "answer": "In the case of Sutcliffe, Timothy Warren v General Motors-Holden's Automotive Ltd [1997] FCA 669, the court ordered that the review shall be conducted on the transcript of the evidence and exhibits before the Judicial Registrar with a right in the parties to submit additional affidavit evidence in chief. The employer was directed to file and serve any additional affidavit, constituting the further evidence in chief of any witness on which it intends to rely at the trial, on or before 15 August 1997. The employee was directed to file and serve any additional affidavit, constituting the further evidence in chief of any witness on which he intends to rely at the trial, on or before 5 September 1997. The trial was scheduled to take place in Adelaide at 10.15 am on 17 September 1997, with 18 and 19 September 1997 being reserved.
+    """, 
+    "passage": """
+        1. The orders of the Judicial Registrar regarding remuneration lost and continuity of the employee’s employment are stayed pending the hearing and determination of the review. 2. The employer’s notice of motion of 23 July 1997 is otherwise dismissed. 3. The review shall be conducted on the transcript of the evidence and exhibits before the Judicial Registrar with a right in the parties to submit additional affidavit evidence in chief. 4. On or before 15 August 1997 the employer shall file and serve any affidavit, constituting the further evidence in chief of any witness on which it intends to rely at the trial additional to the evidence given before the Judicial Registrar. 5. On or before 5 September 1997 the employee shall file and serve any affidavit, constituting the further evidence in chief of any witness on which he intends to rely at the trial additional to the evidence given before the Judicial Registrar. 6. The trial will take place in Adelaide at 10.15 am on 17 September 1997, with 18 and 19 September 1997 being reserved. 7. Liberty to apply on not less than forty-eight hours written notice to each other party. Note: Settlement and entry of orders is dealt with in Order 36 of the Federal Court Rules.
+    """
+}
+// Different question 
+// +
+// Overlapping passages
+// +
+// Same document
+
+// # federal_court_of_australia:fca/single/1997/1997fca0188: 2 rows at indices [558, 1265]
+{
+    "row_index": 558, 
+    "version_id": "federal_court_of_australia:fca/single/1997/1997fca0188", 
+    "citation": "Re Thurwood, Frank Ex Parte GIO Workers Compensation (Victoria) Ltd & Anor [1997] FCA 188", 
+    "source_type": "decision", 
+    "jurisdiction": "commonwealth", 
+    "url": "https://www.judgments.fedcourt.gov.au/judgments/Judgments/fca/single/1997/1997fca0188", 
+    "question": "What were the orders made by Judge Ryan J in the case of Re Thurwood, Frank Ex Parte GIO Workers Compensation (Victoria) Ltd & Anor [1997] FCA 188?", 
+    "answer": """
+        In the case of Re Thurwood, Frank Ex Parte GIO Workers Compensation (Victoria) Ltd & Anor [1997] FCA 188, Judge Ryan J made several orders. Firstly, the period at the expiration of which the petition shall lapse was set to be 24 months, expiring on 18 March 1998. Secondly, the hearing of the petition was adjourned to a date to be fixed not earlier than 5 May 1997. Thirdly, the costs of the petitioning creditor and the supporting creditor of the hearing on 26, 27 and 28 February 1997 were to be treated as part of the petitioning creditor's costs in the event that a sequestration order is subsequently made on the petition referred to in paragraph 1 of this order and otherwise be taxed and paid by the debtor. Fourthly, the costs of W.A. Freightlines Pty Ltd of the hearing on 26 February 1997 were reserved. Lastly, liberty was reserved to either party to apply to Ryan J on not less than 72 hours notice in writing to the other party.
+    """, 
+    "passage": """
+        Catchwords Orders IN THE FEDERAL COURT OF AUSTRALIA) BANKRUPTCY DISTRICT OF THE STATE)No VP 218 of 1996 OF VICTORIA) RE:FRANK THURWOOD (Judgment Debtor) EX PARTE:GIO WORKERS COMPENSATION (VICTORIA) LIMITED (ACN 060 346 509) AUTHORISED AGENTS FOR THE VICTORIAN WORKCOVER AUTHORITY (Judgment Creditor) DEPUTY COMMISSIONER OF TAXATION OF THE COMMONWEALTH OF AUSTRALIA (Supporting Creditor) Judge Making Order:Ryan J Date of Order:28 February 1997 Where Made:Melbourne MINUTES OF ORDER THE COURT ORDERS: 1.That the period at the expiration of which the petition shall lapse shall be 24 months expiring on 18 March 1998. 2.That the hearing of the petition be adjourned to a date to be fixed not earlier than 5 May 1997. 3.That the costs of the petitioning creditor and the supporting creditor of the hearing on 26, 27 and 28 February 1997 be treated as part of the petitioning creditor's costs in the event that a sequestration order is subsequently made on the petition referred to in paragraph 1 of this order and otherwise be taxed and paid by the debtor. 4.That the costs of W.A. Freightlines Pty Ltd of the hearing on 26 February 1997 be reserved. 5.That liberty be reserved to either party to apply to Ryan J on not less than 72 hours notice in writing to the other party. NOTE:Settlement and entry of orders is dealt with in Order 36 of the Federal Court Rules Reasons IN THE FEDERAL COURT OF AUSTRALIA)
+    """
+}
+{
+    "row_index": 1265, 
+    "version_id": "federal_court_of_australia:fca/single/1997/1997fca0188", 
+    "citation": "Re Thurwood, Frank Ex Parte GIO Workers Compensation (Victoria) Ltd & Anor [1997] FCA 188", 
+    "source_type": "decision", 
+    "jurisdiction": "commonwealth", 
+    "url": "https://www.judgments.fedcourt.gov.au/judgments/Judgments/fca/single/1997/1997fca0188", 
+    "question": "In the case of Re Thurwood, Frank Ex Parte GIO Workers Compensation (Victoria) Ltd & Anor [1997] FCA 188, what decision was made regarding the debtor's application for an adjournment?", 
+    "answer": """
+        In the case of Re Thurwood, Frank Ex Parte GIO Workers Compensation (Victoria) Ltd & Anor [1997] FCA 188, the court decided to accede to the debtor's application for an adjournment. This decision was made after considering the language of s 33(1)(a) of the Act, the strong opposition from the petitioning creditor and the Deputy Commissioner, and the fact that almost 12 months had elapsed since the issue of the petition. The court also took into account the debtor's ongoing action against the receiver and manager, and the lack of significant detriment likely to accrue to the petitioning creditor, the supporting creditor, creditors generally or the public if a sequestration order was not made in the meantime.
+    """, 
+    "passage": """
+        However, the discretion is not so confined, see e.g. Field v Commercial Banking Co of Sydney Ltd (1978) 22 ALR 403. In exercising it in the unfettered way suggested by the language of s 33(1)(a) of the Act, I have decided on balance, and not without hesitation, to accede to the debtor's application for an adjournment. In coming to that conclusion I have not been unmindful that the petitioning creditor strongly supported by the Deputy Commissioner has pressed for an immediate sequestration order. I have also had regard to the fact that almost 12 months have now elapsed since the issue of the petition. However, the consequences for the creditors of that fact can be mitigated by an order which I propose to make renewing the petition. In the same context, it is to be borne in mind that in the latter half of 1996 adjournments totalling in the order of 6 months were allowed to the debtor apparently with a view to his prosecuting to a conclusion his action against the receiver and manager. That conclusion in the light of the fixture of the trial for 28 April this year will occur in the foreseeable future. On the evidence I can discern no significant detriment which is likely to accrue to the petitioning creditor, the supporting creditor, creditors generally or the public if a sequestration order be not made in the meantime. The ability of the debtor to continue to trade unprofitably through Bartral Pty Ltd is likely to be curtailed by the winding up petition pending against the company and it can be presumed that the debtor's present financial circumstances are widely known in the road transport industry.
+    """
+}
+// Different question 
+// +
+// Overlapping passages
+// +
+// Same document
+
+
+// # federal_court_of_australia:fca/single/1995/1995fca1173: 2 rows at indices [347, 1721]
+{
+    "row_index": 347, 
+    "version_id": "federal_court_of_australia:fca/single/1995/1995fca1173", 
+    "citation": "Members of the Yorta Yorta Aboriginal Community & Ors v The State of Victoria & Ors [1995] FCA 1173", 
+    "source_type": "decision", 
+    "jurisdiction": "commonwealth", 
+    "url": "https://www.judgments.fedcourt.gov.au/judgments/Judgments/fca/single/1995/1995fca1173", 
+    "question": """
+        In the case of Members of the Yorta Yorta Aboriginal Community & Ors v The State of Victoria & Ors [1995] FCA 1173, what does section 84(2) of the Act provide for and what is the issue raised by the motions brought pursuant to this section?", "answer": "In the case of Members of the Yorta Yorta Aboriginal Community & Ors v The State of Victoria & Ors [1995] FCA 1173, section 84(2) of the Act provides that a person may seek leave of the Federal Court to be joined as a party to proceedings if the person's interests are affected by the matter or may be affected by a determination in the proceedings. The motions brought pursuant to this section raise the issue of whether the interests of those seeking leave to be joined as a party may be affected by a determination in the proceedings. To resolve this issue, it is necessary to consider the true construction of s 84(2) and to apply the subsection to the facts established in each case. The construction issue relates to the meaning of the words \"the person's interests\".
+    """, 
+    "passage": """
+        In the course of the s 72 conference, McPherson and the Association each claimed standing as a party to the application but in each case Gray J refused to accord that recognition on the ground that he was not satisfied that their respective interests may be affected by a determination in relation to the application (s 68(1)(b)). (Both later appealed to the Federal Court pursuant to s 169(4) but the appeals had not been heard by the time the native title application was lodged with the Court pursuant to s 74 and have since been discontinued). The provisions of Part 4 of the Act (ss 80-94) apply in proceedings in relation to applications lodged with the Federal Court under s 74 (s 80). Section 84 provides: 84.(1) The persons who were parties under section 68 in relation to the application are parties. (2) A person may seek leave of the Federal Court to be joined as a party to proceedings if the person's interests are affected by the matter or may be affected by a determination in the proceedings. The motions presently under consideration are brought pursuant to s 84(2) and raise the issue of whether the interests of those seeking leave to be joined as a party may be affected by a determination in the proceedings. To resolve this issue it is necessary to consider the true construction of s 84(2) and to apply the subsection to the facts established in each case. The construction issue relates to the meaning of the words \"the person's interests\". But it is important first to understand what type of determination the Court can make in the proceedings in order to assess whether any relevant interests may be affected by such a determination.
+    """
+}
+{
+    "row_index": 1721, 
+    "version_id": "federal_court_of_australia:fca/single/1995/1995fca1173", 
+    "citation": "Members of the Yorta Yorta Aboriginal Community & Ors v The State of Victoria & Ors [1995] FCA 1173", 
+    "source_type": "decision", 
+    "jurisdiction": "commonwealth", 
+    "url": "https://www.judgments.fedcourt.gov.au/judgments/Judgments/fca/single/1995/1995fca1173", 
+    "question": """
+        Who represented the State of Victoria and the State of New South Wales in the case of Members of the Yorta Yorta Aboriginal Community & Ors v The State of Victoria & Ors [1995] FCA 1173?", "answer": "In the case of Members of the Yorta Yorta Aboriginal Community & Ors v The State of Victoria & Ors [1995] FCA 1173, the State of Victoria and the State of New South Wales were represented by Ms Melanie Sloss, who was instructed by the Victorian Government Solicitor and Crown Solicitor for NSW.
+    """, 
+    "passage": """
+        Associate: Dated: Heard: 13 October 1995 Place: Melbourne Judgment: 13 October 1995 Reasons published: 28 November 1995. Appearances: Mr G. Hiley QC and Mr G. Moloney (instructed by Camerons) appeared for Graeme Ross McPherson and Victorian Field and Game Association Incorporated. Mr Peter Seidel (instructed by Arnold Bloch Liebler) appeared for the applicants. Ms Melanie Sloss (instructed by Victorian Government Solicitor and Crown Solicitor for NSW) appeared for the State of Victoria and the State of New South Wales. `
+    """
+}
+// Different question 
+// +
+// Overlapping passages
+// +
+// Same document
+
+// # federal_court_of_australia:fca/single/1983/1983fca0149: 2 rows at indices [668, 1891]
+{   
+    "row_index": 668, 
+    "version_id": "federal_court_of_australia:fca/single/1983/1983FCA0149", 
+    "citation": "Re Trajkoski, Bozin [1983] FCA 149", 
+    "source_type": "decision", 
+    "jurisdiction": "commonwealth", 
+    "url": "https://www.judgments.fedcourt.gov.au/judgments/Judgments/fca/single/1983/1983FCA0149.pdf", 
+    "question": """
+        Who became the registered proprietors of a house property situated at 52 Nicholas Street, Higgins, according to the decision in Re Trajkoski, Bozin [1983] FCA 149?
+    """, 
+    "answer": """
+        In the decision of Re Trajkoski, Bozin [1983] FCA 149, it was stated that the bankrupt and his former wife, Silvana Trajkoski, became the registered proprietors of a house property situated at 52 Nicholas Street, Higgins.
+    """, 
+    "passage": """
+        Shop 143 was closed by the Canberra Commerclal Development Authorlty for arrears in rent. On 9 June, 1972 the bankrupt and hls former wlfe, Silvana Trajkoskl, became the registered proprletors of a house property situated at 52 Nicholas Street, Higgins. The purchase prlce was $10,750.00. A deposit of $500.00 was paid. The balance of funds were provided by an advance from the Department of Capltal Territory which was secured by a registered first mortgage over the subject property. 
+    """
+}
+{
+    "row_index": 1891, 
+    "version_id": "federal_court_of_australia:fca/single/1983/1983FCA0149", 
+    "citation": "Re Trajkoski, Bozin [1983] FCA 149", 
+    "source_type": "decision", 
+    "jurisdiction": "commonwealth", 
+    "url": "https://www.judgments.fedcourt.gov.au/judgments/Judgments/fca/single/1983/1983FCA0149.pdf", 
+    "question": "What was the financial status of Tray Constructions Pty. Limited when it was wound up according to the decision in Re Trajkoski, Bozin [1983] FCA 149?", 
+    "answer": """
+        According to the decision in Re Trajkoski, Bozin [1983] FCA 149, when Tray Constructions Pty. Limited was wound up, the company's statement of affairs disclosed an estimated deficiency of $226,683.75 as at 24 May, 1978. Additionally, the liquidators' report to creditors advised that an unexplained trading loss of $84,311.96 was incurred during the period 1 July, 1975 to 26 March, 1976.
+    """, 
+    "passage": """
+        quallfied biologist with a Diploma of Blology concerung tobaccof romM acedonla. InS eptember,1 973, a company called TrayC onsn-uctlons Ptjr. Limited was lncorporated in the Australian Capital Terrltory. The bankrupt was one of ~ T dSir ectors and shareholders. Thec ompany carriedo nt heb usmess of gen- eral commercialc onstructlon. Its businesso perationsw ere . not successful and it was wound up by order of the Supreme Courto ft heT errltory on 26 March1, 976. The companyls statemento fa r\"fairsd isclosed an estimated deficlency of $226,683.75 as a t 24 May, 1978. The liquldators'r eportt o credltors advised that an unexplained trading loss of $84,311.96 was Incurred during the period 1 July, 1975 to 26 March, 1976. Another company, Tray FormworkF 'ty. Limited was incorporated on 5 February, 1976. The bankrupt was again oneo f its directors and shareholders. Thec ompany was formed t o operate in conJunction with Tray Constructions Pty.L
+    """
+}
+// Different question 
+// +
+// Overlapping passages
+// +
+// Same document
