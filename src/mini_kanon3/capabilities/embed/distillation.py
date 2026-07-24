@@ -81,6 +81,13 @@ class DistillationTrainer:
         model.max_seq_length = int(self.config["sequence_length"])
         if not any(isinstance(module, models.Normalize) for module in model._modules.values()):
             model.add_module("normalize", models.Normalize())
+        first_parameter = next(model.parameters())
+        print(
+            f"[setup] model={self.config['model_name']} device={model.device} "
+            f"dtype={first_parameter.dtype} "
+            f"mixed_precision={self.config.get('mixed_precision', False)}",
+            flush=True,
+        )
         queries, corpus, _ = load_retrieval_split(Path(self.config["train_queries"]).parent)
         records = list(_read_jsonl(Path(self.config["teacher_scores_path"])))
         _validate_teacher_records(records, queries, corpus)
@@ -116,8 +123,23 @@ class DistillationTrainer:
                 positive_targets = torch.zeros(len(batch), dtype=torch.long, device=model.device)
                 contrastive_loss = functional.cross_entropy(student_logits, positive_targets)
                 loss = alpha * distill_loss + (1.0 - alpha) * contrastive_loss
+                if not torch.isfinite(loss).all():
+                    query_ids = [item["query_id"] for item in batch]
+                    raise FloatingPointError(
+                        "Non-finite distillation loss before backward: "
+                        f"epoch={epoch + 1}, batch={batch_index}, "
+                        f"step={global_step + 1}, loss={loss.detach().cpu().item()}, "
+                        f"distill_loss={distill_loss.detach().cpu().item()}, "
+                        f"contrastive_loss={contrastive_loss.detach().cpu().item()}, "
+                        f"model_dtype={first_parameter.dtype}, device={model.device}, "
+                        f"query_ids={query_ids}"
+                    )
                 optimizer.zero_grad(set_to_none=True); loss.backward()
-                torch.nn.utils.clip_grad_norm_(model.parameters(), float(self.config["max_grad_norm"]))
+                gradient_norm = torch.nn.utils.clip_grad_norm_(
+                    model.parameters(),
+                    float(self.config["max_grad_norm"]),
+                    error_if_nonfinite=True,
+                )
                 optimizer.step(); scheduler.step(); loss_value = float(loss.detach().cpu())
                 epoch_losses.append(loss_value); global_step += 1
                 learning_rate = optimizer.param_groups[0]["lr"]
@@ -126,6 +148,7 @@ class DistillationTrainer:
                     f"epoch={epoch + 1}/{epochs} "
                     f"batch={batch_index}/{len(loader)} "
                     f"step={global_step} loss={loss_value:.6f} "
+                    f"grad_norm={float(gradient_norm.detach().cpu()):.6f} "
                     f"lr={learning_rate:.8g}",
                     flush=True,
                 )

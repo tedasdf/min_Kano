@@ -39,6 +39,13 @@ class EmbedTrainer:
         model.max_seq_length = int(self.config["sequence_length"])
         if not any(isinstance(module, models.Normalize) for module in model._modules.values()):
             model.add_module("normalize", models.Normalize())
+        first_parameter = next(model.parameters())
+        print(
+            f"[setup] model={self.config['model_name']} device={model.device} "
+            f"dtype={first_parameter.dtype} "
+            f"mixed_precision={self.config.get('mixed_precision', False)}",
+            flush=True,
+        )
         queries, corpus, positives = load_positive_groups(self._path("train_queries").parent)
         epochs = int(self.config["epochs"])
         batch_size = int(self.config["batch_size"])
@@ -93,8 +100,21 @@ class EmbedTrainer:
                     labels = labels.to(model.device)
                 optimizer.zero_grad(set_to_none=True)
                 loss = loss_model(features, labels)
+                if not torch.isfinite(loss).all():
+                    query_ids = [pair.query_id for pair in pair_batch]
+                    raise FloatingPointError(
+                        "Non-finite training loss before backward: "
+                        f"epoch={epoch + 1}, batch={batch_index}, "
+                        f"step={global_step + 1}, loss={loss.detach().cpu().item()}, "
+                        f"model_dtype={first_parameter.dtype}, device={model.device}, "
+                        f"query_ids={query_ids}"
+                    )
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(model.parameters(), float(self.config["max_grad_norm"]))
+                gradient_norm = torch.nn.utils.clip_grad_norm_(
+                    model.parameters(),
+                    float(self.config["max_grad_norm"]),
+                    error_if_nonfinite=True,
+                )
                 optimizer.step()
                 scheduler.step()
                 loss_value = float(loss.detach().cpu())
@@ -106,6 +126,7 @@ class EmbedTrainer:
                     f"epoch={epoch + 1}/{epochs} "
                     f"batch={batch_index}/{len(pair_batches)} "
                     f"step={global_step} loss={loss_value:.6f} "
+                    f"grad_norm={float(gradient_norm.detach().cpu()):.6f} "
                     f"lr={learning_rate:.8g}",
                     flush=True,
                 )
