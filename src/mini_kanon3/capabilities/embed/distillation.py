@@ -78,6 +78,8 @@ class DistillationTrainer:
         if torch.cuda.is_available(): torch.cuda.manual_seed_all(self.seed)
         device = "cuda" if self.config.get("device", "auto") == "auto" and torch.cuda.is_available() else self.config.get("device", "cpu")
         model = SentenceTransformer(self.config["model_name"], device=device, trust_remote_code=True)
+        if not self.config.get("mixed_precision", False):
+            model.float()
         model.max_seq_length = int(self.config["sequence_length"])
         if not any(isinstance(module, models.Normalize) for module in model._modules.values()):
             model.add_module("normalize", models.Normalize())

@@ -36,6 +36,11 @@ class EmbedTrainer:
         self._seed_everything(torch, np)
         device = self._resolve_device(torch)
         model = SentenceTransformer(self.config["model_name"], device=device, trust_remote_code=True)
+        if not self.config.get("mixed_precision", False):
+            # GradCache recomputes mini-batches during backward. Representations
+            # and cached gradients must have the same dtype; disabling AMP does
+            # not itself upcast a model loaded from half-precision weights.
+            model.float()
         model.max_seq_length = int(self.config["sequence_length"])
         if not any(isinstance(module, models.Normalize) for module in model._modules.values()):
             model.add_module("normalize", models.Normalize())
