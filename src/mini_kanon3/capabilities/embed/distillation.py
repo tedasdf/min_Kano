@@ -94,7 +94,8 @@ class DistillationTrainer:
         records = list(_read_jsonl(Path(self.config["teacher_scores_path"])))
         _validate_teacher_records(records, queries, corpus)
         batch_size, epochs = int(self.config["batch_size"]), int(self.config["epochs"])
-        total_steps = ((len(records) + batch_size - 1) // batch_size) * epochs
+        steps_per_epoch = (len(records) + batch_size - 1) // batch_size
+        total_steps = steps_per_epoch * epochs
         optimizer = torch.optim.AdamW(model.parameters(), lr=float(self.config["learning_rate"]),
                                       weight_decay=float(self.config["weight_decay"]))
         scheduler = get_linear_schedule_with_warmup(
@@ -148,7 +149,7 @@ class DistillationTrainer:
                 print(
                     f"[train] run={self.config.get('run_name', 'embed_v4')} "
                     f"epoch={epoch + 1}/{epochs} "
-                    f"batch={batch_index}/{len(loader)} "
+                    f"batch={batch_index}/{steps_per_epoch} "
                     f"step={global_step} loss={loss_value:.6f} "
                     f"grad_norm={float(gradient_norm.detach().cpu()):.6f} "
                     f"lr={learning_rate:.8g}",
