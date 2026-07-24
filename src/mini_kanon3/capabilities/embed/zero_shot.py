@@ -70,11 +70,26 @@ def evaluate_dense(model_name: str, split_dir: Path, batch_size=16, device=None,
 
 def _result(model, split_dir, queries, corpus, qrels, rankings, setup_seconds,
             evaluation_seconds, dimension, parameters):
+    per_query = {}
+    for query_id in sorted(qrels):
+        relevant = qrels[query_id]
+        ranked = rankings.get(query_id, [])
+        positive_ranks = [
+            index + 1
+            for index, passage_id in enumerate(ranked)
+            if passage_id in relevant
+        ]
+        per_query[query_id] = {
+            "positive_passage_ids": sorted(relevant),
+            "best_positive_rank": min(positive_ranks) if positive_ranks else None,
+            "top_10_passage_ids": ranked[:10],
+        }
     return {
         "schema_version": 1, "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "model": model, "split": str(split_dir), "queries": len(queries),
         "passages": len(corpus), "positive_pairs": sum(map(len, qrels.values())),
         "metrics": evaluate_rankings(rankings, qrels),
+        "per_query": per_query,
         "efficiency": {"setup_seconds": round(setup_seconds, 6),
                        "evaluation_seconds": round(evaluation_seconds, 6),
                        "mean_query_latency_ms": round(evaluation_seconds * 1000 / len(queries), 6),

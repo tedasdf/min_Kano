@@ -691,3 +691,7 @@ The main outcome is therefore not row deletion. It is a defensible split strateg
 5. evaluates retrieval on genuinely held-out legal documents.
 
 This supports the intended claim: the model is evaluated on its ability to retrieve relevant passages for new legal queries from documents that were not used during fine-tuning.
+
+
+# Evaluate models
+
