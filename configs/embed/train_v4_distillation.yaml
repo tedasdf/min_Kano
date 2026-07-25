@@ -12,6 +12,10 @@ test_qrels: data/processed/embed/test/qrels.tsv
 teacher_scores_path: data/interim/embed/teacher/cross_encoder/train.jsonl
 sequence_length: 512
 batch_size: 8
+# Physical query groups held on the GPU at once. Gradients accumulate to keep
+# the effective batch_size above while avoiding 8 x 9 candidate passages in
+# one forward graph on a 22 GiB GPU.
+mini_batch_size: 1
 learning_rate: 2.0e-5
 epochs: 3
 warmup_ratio: 0.1

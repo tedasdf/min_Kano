@@ -93,7 +93,20 @@ class DistillationTrainer:
         queries, corpus, _ = load_retrieval_split(Path(self.config["train_queries"]).parent)
         records = list(_read_jsonl(Path(self.config["teacher_scores_path"])))
         _validate_teacher_records(records, queries, corpus)
-        batch_size, epochs = int(self.config["batch_size"]), int(self.config["epochs"])
+        batch_size = int(self.config["batch_size"])
+        mini_batch_size = int(self.config.get("mini_batch_size", batch_size))
+        epochs = int(self.config["epochs"])
+        if batch_size < 1 or mini_batch_size < 1:
+            raise ValueError("batch_size and mini_batch_size must be positive")
+        if mini_batch_size > batch_size:
+            raise ValueError("mini_batch_size cannot exceed batch_size")
+        print(
+            f"[setup] effective_batch_size={batch_size} "
+            f"mini_batch_size={mini_batch_size} "
+            f"gradient_accumulation_steps="
+            f"{(batch_size + mini_batch_size - 1) // mini_batch_size}",
+            flush=True,
+        )
         steps_per_epoch = (len(records) + batch_size - 1) // batch_size
         total_steps = steps_per_epoch * epochs
         optimizer = torch.optim.AdamW(model.parameters(), lr=float(self.config["learning_rate"]),
@@ -109,47 +122,111 @@ class DistillationTrainer:
         for epoch in range(epochs):
             model.train(); random.Random(f"{self.seed}:{epoch}").shuffle(records); epoch_losses = []
             for batch_index, offset in enumerate(range(0, len(records), batch_size), 1):
-                batch = records[offset:offset + batch_size]
-                candidate_count = len(batch[0]["candidates"])
-                query_texts = [queries[row["query_id"]] for row in batch]
-                document_texts = [corpus[item["passage_id"]] for row in batch for item in row["candidates"]]
-                qfeatures = util.batch_to_device(model.tokenize(query_texts), model.device)
-                dfeatures = util.batch_to_device(model.tokenize(document_texts), model.device)
-                qemb = model(qfeatures)["sentence_embedding"]
-                demb = model(dfeatures)["sentence_embedding"].reshape(len(batch), candidate_count, -1)
-                student_logits = torch.einsum("bd,bcd->bc", qemb, demb) * student_scale
-                teacher_logits = torch.tensor([[item["teacher_score"] for item in row["candidates"]]
-                                               for row in batch], device=model.device, dtype=student_logits.dtype)
-                teacher_distribution = functional.softmax(teacher_logits / teacher_temperature, dim=1)
-                distill_loss = functional.kl_div(functional.log_softmax(student_logits, dim=1),
-                                                  teacher_distribution, reduction="batchmean")
-                positive_targets = torch.zeros(len(batch), dtype=torch.long, device=model.device)
-                contrastive_loss = functional.cross_entropy(student_logits, positive_targets)
-                loss = alpha * distill_loss + (1.0 - alpha) * contrastive_loss
-                if not torch.isfinite(loss).all():
-                    query_ids = [item["query_id"] for item in batch]
-                    raise FloatingPointError(
-                        "Non-finite distillation loss before backward: "
-                        f"epoch={epoch + 1}, batch={batch_index}, "
-                        f"step={global_step + 1}, loss={loss.detach().cpu().item()}, "
-                        f"distill_loss={distill_loss.detach().cpu().item()}, "
-                        f"contrastive_loss={contrastive_loss.detach().cpu().item()}, "
-                        f"model_dtype={first_parameter.dtype}, device={model.device}, "
-                        f"query_ids={query_ids}"
+                logical_batch = records[offset:offset + batch_size]
+                optimizer.zero_grad(set_to_none=True)
+                logical_loss = 0.0
+                mini_batches = (
+                    len(logical_batch) + mini_batch_size - 1
+                ) // mini_batch_size
+                for mini_index, mini_offset in enumerate(
+                    range(0, len(logical_batch), mini_batch_size),
+                    1,
+                ):
+                    batch = logical_batch[
+                        mini_offset:mini_offset + mini_batch_size
+                    ]
+                    candidate_count = len(batch[0]["candidates"])
+                    query_texts = [queries[row["query_id"]] for row in batch]
+                    document_texts = [
+                        corpus[item["passage_id"]]
+                        for row in batch
+                        for item in row["candidates"]
+                    ]
+                    qfeatures = util.batch_to_device(
+                        model.tokenize(query_texts),
+                        model.device,
                     )
-                optimizer.zero_grad(set_to_none=True); loss.backward()
+                    dfeatures = util.batch_to_device(
+                        model.tokenize(document_texts),
+                        model.device,
+                    )
+                    qemb = model(qfeatures)["sentence_embedding"]
+                    demb = model(dfeatures)["sentence_embedding"].reshape(
+                        len(batch),
+                        candidate_count,
+                        -1,
+                    )
+                    student_logits = (
+                        torch.einsum("bd,bcd->bc", qemb, demb)
+                        * student_scale
+                    )
+                    teacher_logits = torch.tensor(
+                        [
+                            [
+                                item["teacher_score"]
+                                for item in row["candidates"]
+                            ]
+                            for row in batch
+                        ],
+                        device=model.device,
+                        dtype=student_logits.dtype,
+                    )
+                    teacher_distribution = functional.softmax(
+                        teacher_logits / teacher_temperature,
+                        dim=1,
+                    )
+                    distill_loss = functional.kl_div(
+                        functional.log_softmax(student_logits, dim=1),
+                        teacher_distribution,
+                        reduction="batchmean",
+                    )
+                    positive_targets = torch.zeros(
+                        len(batch),
+                        dtype=torch.long,
+                        device=model.device,
+                    )
+                    contrastive_loss = functional.cross_entropy(
+                        student_logits,
+                        positive_targets,
+                    )
+                    loss = (
+                        alpha * distill_loss
+                        + (1.0 - alpha) * contrastive_loss
+                    )
+                    if not torch.isfinite(loss).all():
+                        query_ids = [item["query_id"] for item in batch]
+                        raise FloatingPointError(
+                            "Non-finite distillation loss before backward: "
+                            f"epoch={epoch + 1}, batch={batch_index}, "
+                            f"mini_batch={mini_index}/{mini_batches}, "
+                            f"step={global_step + 1}, "
+                            f"loss={loss.detach().cpu().item()}, "
+                            f"distill_loss="
+                            f"{distill_loss.detach().cpu().item()}, "
+                            f"contrastive_loss="
+                            f"{contrastive_loss.detach().cpu().item()}, "
+                            f"model_dtype={first_parameter.dtype}, "
+                            f"device={model.device}, query_ids={query_ids}"
+                        )
+                    # Both component losses are means over the mini-batch.
+                    # Weight by its share of the logical batch so accumulated
+                    # gradients equal the full logical-batch mean.
+                    mini_weight = len(batch) / len(logical_batch)
+                    (loss * mini_weight).backward()
+                    logical_loss += float(loss.detach().cpu()) * mini_weight
                 gradient_norm = torch.nn.utils.clip_grad_norm_(
                     model.parameters(),
                     float(self.config["max_grad_norm"]),
                     error_if_nonfinite=True,
                 )
-                optimizer.step(); scheduler.step(); loss_value = float(loss.detach().cpu())
+                optimizer.step(); scheduler.step(); loss_value = logical_loss
                 epoch_losses.append(loss_value); global_step += 1
                 learning_rate = optimizer.param_groups[0]["lr"]
                 print(
                     f"[train] run={self.config.get('run_name', 'embed_v4')} "
                     f"epoch={epoch + 1}/{epochs} "
                     f"batch={batch_index}/{steps_per_epoch} "
+                    f"mini_batches={mini_batches} "
                     f"step={global_step} loss={loss_value:.6f} "
                     f"grad_norm={float(gradient_norm.detach().cpu()):.6f} "
                     f"lr={learning_rate:.8g}",
