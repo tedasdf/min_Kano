@@ -11,8 +11,8 @@ test_queries: data/processed/embed/test/queries.jsonl
 test_corpus: data/processed/embed/test/corpus.jsonl
 test_qrels: data/processed/embed/test/qrels.tsv
 sequence_length: 512
-batch_size: 32
-mini_batch_size: 8
+batch_size: 16
+mini_batch_size: 4
 learning_rate: 2.0e-5
 loss: CachedMultipleNegativesRankingLoss
 loss_scale: 20.0
