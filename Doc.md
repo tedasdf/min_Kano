@@ -695,3 +695,17 @@ This supports the intended claim: the model is evaluated on its ability to retri
 
 # Evaluate models
 
+| Model     | Negative strategy |   Recall@1 |   Recall@5 |  Recall@10 |        MRR |    NDCG@10 |
+| --------- | ----------------- | ---------: | ---------: | ---------: | ---------: | ---------: |
+| Zero-shot | None              |     0.8318 |     0.9065 |     0.9393 |     0.8661 |     0.8816 |
+| V1        | In-batch only     |     0.9439 | **0.9953** | **0.9953** |     0.9642 |     0.9719 |
+| V2        | BM25-mined        | **0.9579** |     0.9907 | **0.9953** | **0.9711** | **0.9770** |
+| V3        | Dense-mined       |     0.9533 |     0.9907 |     0.9907 |     0.9701 |     0.9751 |
+
+
+| Model     | Correct at rank 1 | Found by rank 5 | Found by rank 10 |
+| --------- | ----------------: | --------------: | ---------------: |
+| Zero-shot |               178 |             194 |              201 |
+| V1        |               202 |             213 |              213 |
+| V2        |           **205** |             212 |          **213** |
+| V3        |               204 |             212 |              212 |

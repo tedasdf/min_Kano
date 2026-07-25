@@ -68,7 +68,7 @@ def main() -> None:
             else "neither_succeeds"
         )
         counts[category] += 1
-        if category not in {"left_only", "right_only"}:
+        if category == "both_succeed":
             continue
 
         left_top = left_row["top_10_passage_ids"][0]
@@ -80,6 +80,8 @@ def main() -> None:
                     f"{args.left_label}_succeeds_{args.right_label}_fails"
                     if category == "left_only"
                     else f"{args.right_label}_succeeds_{args.left_label}_fails"
+                    if category == "right_only"
+                    else "both_models_fail"
                 ),
                 "cutoff": args.cutoff,
                 "query_id": query_id,
@@ -90,11 +92,15 @@ def main() -> None:
                 ],
                 args.left_label: {
                     "best_positive_rank": left_row["best_positive_rank"],
+                    "correct_passage_rank": left_row["best_positive_rank"],
+                    "within_cutoff": left_ok,
                     "top_passage_id": left_top,
                     "top_passage_text": corpus[left_top],
                 },
                 args.right_label: {
                     "best_positive_rank": right_row["best_positive_rank"],
+                    "correct_passage_rank": right_row["best_positive_rank"],
+                    "within_cutoff": right_ok,
                     "top_passage_id": right_top,
                     "top_passage_text": corpus[right_top],
                 },
@@ -113,7 +119,7 @@ def main() -> None:
                 "left_model": left["model"],
                 "right_model": right["model"],
                 "counts": counts,
-                "disagreement_rows_written": len(rows),
+                "diagnostic_rows_written": len(rows),
                 "output": str(args.output),
             },
             indent=2,
