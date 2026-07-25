@@ -16,10 +16,10 @@ CHECKPOINTS = {
 }
 
 REPOSITORY_NAMES = {
-    "v1": "mini-kanon3-embed-v1-in-batch",
-    "v2": "mini-kanon3-embed-v2-bm25",
-    "v3": "mini-kanon3-embed-v3-dense",
-    "v4": "mini-kanon3-embed-v4-distillation",
+    "v1": "auslegal-embed-gte-inbatch",
+    "v2": "auslegal-embed-gte-bm25",
+    "v3": "auslegal-embed-gte-dense",
+    "v4": "auslegal-embed-gte-distilled",
 }
 
 

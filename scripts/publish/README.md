@@ -41,7 +41,7 @@ training-data provenance, and evaluation results:
 
 ```bash
 python scripts/publish/upload_embed_models.py \
-  --namespace YOUR_HF_USERNAME \
+  --namespace Sing0402 \
   --variants v1 v2 v3 \
   --no-private \
   --execute
@@ -50,10 +50,10 @@ python scripts/publish/upload_embed_models.py \
 Default repository names are:
 
 ```text
-mini-kanon3-embed-v1-in-batch
-mini-kanon3-embed-v2-bm25
-mini-kanon3-embed-v3-dense
-mini-kanon3-embed-v4-distillation
+Sing0402/auslegal-embed-gte-inbatch
+Sing0402/auslegal-embed-gte-bm25
+Sing0402/auslegal-embed-gte-dense
+Sing0402/auslegal-embed-gte-distilled
 ```
 
 The script can also use credentials stored by `hf auth login` when `HF_TOKEN`
